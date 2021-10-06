@@ -25,8 +25,10 @@ int main(){
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<float> dist(1.0, 10.0);
+    std::vector<simpleDict> table;
     for(int i = 0;i<N;i++){
         auto exp=simpleDict{i,"NIFTY",{dist(mt),dist(mt)}};
+        table.push_back(exp);
         auto x = convert::from_native(exp);
         k(-t,"`ivol insert",x,K(0));
     }

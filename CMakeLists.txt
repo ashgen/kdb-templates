@@ -12,9 +12,9 @@ target_include_directories(kdb-cpp INTERFACE release/)
 
 include_directories(thirdparty/kx/c/c include)
 
-add_executable(example examples/examples.cpp ${PROJECT_SOURCE_DIR}/thirdparty/kx/l64/c.o)
+add_executable(kdb-example examples/examples.cpp ${PROJECT_SOURCE_DIR}/thirdparty/kx/l64/c.o)
 
-target_include_directories(example PRIVATE thirdparty/kx/c/c include)
-target_link_libraries(example
+target_include_directories(kdb-example PRIVATE thirdparty/kx/c/c include)
+target_link_libraries(kdb-example
         "kdb-cpp"
         "pthread")
