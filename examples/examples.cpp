@@ -10,14 +10,29 @@ using namespace kdb;
 
 #include <unordered_map>
 #include <random>
-static constexpr int N = 1e6;
-struct simpleDict {
-    int time;
-    std::string sym;
-    std::vector<float> iv;
-};
+#include <thread>
 
-KDB_REGISTER(simpleDict,time,sym,iv);
+static constexpr int N = 1e6;
+struct test{
+    std::vector<bool> cp;
+    std::vector<int> strike;
+    std::vector<double> iv;
+};
+KDB_REGISTER(test,cp,strike,iv);
+struct simpleDict {
+    int cnt;
+    std::string sym;
+    double fairsynp;
+    test vol;
+};
+KDB_REGISTER(simpleDict,cnt,sym,fairsynp,vol);
+struct simpleTest {
+    int cnt;
+    std::string sym;
+    double fairsynp;
+};
+KDB_REGISTER(simpleTest,cnt,sym,fairsynp);
+
 
 
 int main(){
@@ -25,12 +40,13 @@ int main(){
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<float> dist(1.0, 10.0);
-    std::vector<simpleDict> table;
+    auto tableName=ks((S) "ivolt");
     for(int i = 0;i<N;i++){
-        auto exp=simpleDict{i,"NIFTY",{dist(mt),dist(mt)}};
-        table.push_back(exp);
+        simpleDict exp = {i,"NIFTY",dist(mt),{{true,false},{10*i,10*i+1},{dist(mt),dist(mt)}}};
+        //simpleTest exp = {i,"NIFTY",dist(mt)};
         auto x = convert::from_native(exp);
-        k(-t,"`ivol insert",x,K(0));
+        k(-t,"insert",r1(tableName),x,K(0));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
     return 0;
 }
