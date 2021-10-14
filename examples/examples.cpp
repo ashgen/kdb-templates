@@ -40,12 +40,12 @@ int main(){
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<float> dist(1.0, 10.0);
-    auto tableName=ks((S) "ivolt");
+    auto tableName=ks((S) "ivol");
     for(int i = 0;i<N;i++){
         simpleDict exp = {i,"NIFTY",dist(mt),{{true,false},{10*i,10*i+1},{dist(mt),dist(mt)}}};
         //simpleTest exp = {i,"NIFTY",dist(mt)};
         auto x = convert::from_native(exp);
-        k(-t,"insert",r1(tableName),x,K(0));
+        k(-t,".u.upd",r1(tableName),x,K(0));
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
     return 0;
