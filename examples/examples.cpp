@@ -23,9 +23,11 @@ struct simpleDict {
     int cnt;
     std::string sym;
     double fairsynp;
-    test vol;
+    std::vector<bool> cp;
+    std::vector<int> strike;
+    std::vector<double> iv;
 };
-KDB_REGISTER(simpleDict,cnt,sym,fairsynp,vol);
+KDB_REGISTER(simpleDict,cnt,sym,fairsynp,cp,strike,iv);
 struct simpleTest {
     int cnt;
     std::string sym;
@@ -42,7 +44,7 @@ int main(){
     std::uniform_real_distribution<float> dist(1.0, 10.0);
     auto tableName=ks((S) "ivol");
     for(int i = 0;i<N;i++){
-        simpleDict exp = {i,"NIFTY",dist(mt),{{true,false},{10*i,10*i+1},{dist(mt),dist(mt)}}};
+        simpleDict exp = {i,"NIFTY",dist(mt),{true,false},{10*i,10*i+1},{dist(mt),dist(mt)}};
         //simpleTest exp = {i,"NIFTY",dist(mt)};
         auto x = convert::from_native(exp);
         k(-t,".u.upd",r1(tableName),x,K(0));
