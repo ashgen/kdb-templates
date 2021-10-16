@@ -36,8 +36,7 @@ struct simpleTest {
 KDB_REGISTER(simpleTest,cnt,sym,fairsynp);
 
 
-
-int main(){
+void testInsert(){
     auto t= khp("localhost",5052);
     std::random_device rd;
     std::mt19937 mt(rd());
@@ -50,5 +49,10 @@ int main(){
         k(-t,".u.upd",r1(tableName),x,K(0));
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
+}
+
+
+int main(){
+    testInsert();
     return 0;
 }
