@@ -23,9 +23,9 @@ struct simpleDict {
     int cnt;
     std::string sym;
     double fairsynp;
-    std::vector<bool> cp;
-    std::vector<int> strike;
-    std::vector<double> iv;
+    std::array<bool,2> cp;
+    std::array<int,2> strike;
+    std::array<double,2> iv;
 };
 KDB_REGISTER(simpleDict,cnt,sym,fairsynp,cp,strike,iv);
 struct simpleTest {
