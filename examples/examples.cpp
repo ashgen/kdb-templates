@@ -35,6 +35,13 @@ struct simpleTest {
 };
 KDB_REGISTER(simpleTest,cnt,sym,fairsynp);
 
+struct data {
+    std::vector<double> oiv;
+    std::vector<double> om;
+    std::vector<double> oweight;
+
+};
+KDB_REGISTER(data,oiv,om,oweight);
 
 void testInsert(){
     auto t= khp("localhost",5052);
@@ -51,8 +58,18 @@ void testInsert(){
     }
 }
 
+const data& testSelect(){
+    auto t= khp("localhost",5055);
+    K _data=k(t,"exec from 1#select iv,m,weight from curve where date=min date,minute > 09:20 ",(K)0);
+    K rows = kK(_data)[1];
+    data test;
+    convert::to_native(rows,test);
+    return std::move(test);
+}
+
 
 int main(){
-    testInsert();
+    //testInsert();
+    testSelect();
     return 0;
 }
