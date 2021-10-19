@@ -27,7 +27,7 @@ upath:"kdb-tick/tick/u.q"
 // all tables in the top level namespace (`.) become publish-able
 // tables that can be published can be seen in .u.w
 .u.init[];
-.u.upd:{[t;d] t insert ("n"$.z.P),d;};
+.u.upd:{[t;d] t insert .z.N,d;};
 // functions to publish data
 // .u.pub takes the table name and table data
 // there is no checking to ensure that the table being published matches
