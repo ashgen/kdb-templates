@@ -1,7 +1,7 @@
 \d .testdata
 
 // set the port
-@[system;"p 5052";{-2"Failed to set port to 6812: ",x,
+@[system;"p 6055";{-2"Failed to set port to 6812: ",x,
 	 	     ". Please ensure no other processes are running on that port",
 		     " or change the port in both the publisher and subscriber scripts.";  
 		     exit 1}]
@@ -11,7 +11,7 @@
 // the tables to be published - all must be in the top level namespace
 // tables to be published require a sym column, which can be of any type
 // apart from that, they can be anything you like
-ivol:([] time:`timespan$();cnt:`long$();sym:`$();fairsynp:`float$();vol:());
+ivol:([] time:`timespan$();cnt:`long$();sym:`$();fairsynp:`float$();cp:();strike:();vol:());
 ivolt:([] cnt:`long$();sym:`$();fairsynp:`float$();vol:());
 ivolz:([] cnt:`long$();sym:`$();fairsynp:`float$());
 pubdata:{(-1*x)#ivolt}
@@ -27,6 +27,7 @@ upath:"kdb-tick/tick/u.q"
 // all tables in the top level namespace (`.) become publish-able
 // tables that can be published can be seen in .u.w
 .u.init[];
+//.u.upd:{[t;d] t insert ("n"$.z.P),d;};
 .u.upd:{[t;d] t insert .z.N,d;};
 // functions to publish data
 // .u.pub takes the table name and table data
