@@ -1,7 +1,7 @@
 \d .testdata
 
 // set the port
-@[system;"p 6055";{-2"Failed to set port to 6812: ",x,
+@[system;"p 6056";{-2"Failed to set port to 6812: ",x,
 	 	     ". Please ensure no other processes are running on that port",
 		     " or change the port in both the publisher and subscriber scripts.";  
 		     exit 1}]

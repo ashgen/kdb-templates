@@ -44,7 +44,7 @@ struct data {
 KDB_REGISTER(data,oiv,om,oweight);
 
 void testInsert(){
-    auto t= khp("localhost",6055);
+    auto t= khp("localhost",6056);
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<float> dist(1.0, 10.0);
@@ -59,7 +59,7 @@ void testInsert(){
 }
 
 const data& testSelect(){
-    auto t= khp("localhost",6055);
+    auto t= khp("localhost",6056);
     K _data=k(t,"exec from 1#select iv,m,weight from curve where date=min date,minute > 09:20 ",(K)0);
     K rows = kK(_data)[1];
     data test;
