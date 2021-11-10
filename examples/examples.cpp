@@ -45,8 +45,9 @@ struct data {
 KDB_REGISTER(data,oiv,om,oweight);
 
 void testInsert(benchmark::State &state) {
-    auto t = khp("localhost", 6055);
-    std::random_device rd;
+    auto t = khp("0.0.0.0", 6055);
+  //auto t = khp("localhost", 6055);
+  std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<float> dist(1.0, 10.0);
     auto tableName = ks((S) "ivol");
