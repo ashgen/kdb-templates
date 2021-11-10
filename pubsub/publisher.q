@@ -1,7 +1,7 @@
 \d .testdata
 
 // set the port
-@[system;"p 6055";{-2"Failed to set port to 6812: ",x,
+@[system;"p 6056";{-2"Failed to set port to 6812: ",x,
 	 	     ". Please ensure no other processes are running on that port",
 		     " or change the port in both the publisher and subscriber scripts.";  
 		     exit 1}]
@@ -11,10 +11,9 @@
 // the tables to be published - all must be in the top level namespace
 // tables to be published require a sym column, which can be of any type
 // apart from that, they can be anything you like
-ivol:([] time:`timespan$();cnt:`long$();sym:`$();fairsynp:`float$();cp:();strike:();vol:());
-ivolt:([] cnt:`long$();sym:`$();fairsynp:`float$();vol:());
-ivolz:([] cnt:`long$();sym:`$();fairsynp:`float$());
-pubdata:{(-1*x)#ivolt}
+vol:([] time:`timespan$();epochTime:`long$();fairsynp:();tte:();atmiv:();strike:();m:();iv:();spread:();piv:();biv:();splineBiasIV:();weight:();delta:();vega:());
+params:([] time:`timespan$();epochTime:`long$();coreParams:();biasParams:();deviationInSpread:();abdDeviationInSpread:();outliers:());
+pubdata:{(-1*x)#vol}
 
 // load in u.q from tick
 upath:"kdb-tick/tick/u.q"
@@ -34,7 +33,7 @@ upath:"kdb-tick/tick/u.q"
 // there is no checking to ensure that the table being published matches
 // the table schema defined at the top level
 // that is left up to the programmer!
-publishmeter:{.u.pub[`ivolt;pubdata[x]]}
+publishmeter:{.u.pub[`vol;pubdata[x]]}
 
 // create timer function to randomly publish
 // between 1 and 10 meter records, and between 1 and 5 grid records
