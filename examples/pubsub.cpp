@@ -58,7 +58,15 @@ struct testKDB{
 };
 KDB_REGISTER(testKDB,timestamp,sym,capacity,rate)
 
+struct testKDBD{
+    kdb::type::atom_long sym;
+    kdb::type::atom_float capacity;
+    kdb::type::atom_int rate;
+};
+KDB_REGISTER(testKDBD,sym,capacity,rate)
+
 testKDB _Test;
+testKDBD _TestD;
 std::atomic<bool> valid=false;
 void testT(I handle){
     K response, table, tableName, columnNames, columnValues;
@@ -72,6 +80,21 @@ void testT(I handle){
         kdb::type::list_symbol tk;
         kdb::convert::to_native(columnNames,tk);
         kdb::convert::to_native(columnValues,_Test);
+        r0(response);
+        valid=true;
+    }
+
+}
+void testTD(I handle){
+    K response, table, tableName, columnNames, columnValues;
+    while(1) {
+        response= k(handle, (S) 0);
+        if(!response)
+            break;
+        table= kK(response)[2];
+        columnValues=kK(table)[1];
+        columnNames= kK(table)[0];
+        kdb::convert::to_native(columnValues,_TestD);
         r0(response);
         valid=true;
     }
@@ -92,6 +115,15 @@ void printTest(){
         if(!t)
             continue;
         std::cout<<_Test.sym[0]<<","<<_Test.rate[0]<<std::endl;
+
+    }
+}
+void printTestD(){
+    while(1){
+        auto t=valid.load();
+        if(!t)
+            continue;
+        std::cout<<_TestD.sym<<","<<_TestD.rate<<","<<_TestD.capacity<<std::endl;
 
     }
 }
@@ -116,8 +148,8 @@ int main() {
         kclose(handle);
         return EXIT_FAILURE;
     }
-    std::thread test(testT,handle);
-    std::thread testx(printTest);
+    std::thread test(testTD,handle);
+    std::thread testx(printTestD);
     stick_this_thread_to_core(test,1);
     stick_this_thread_to_core(testx,2);
     test.join();
