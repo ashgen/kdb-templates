@@ -59,6 +59,16 @@ struct testKDB{
 KDB_REGISTER(testKDB,timestamp,sym,capacity,rate)
 
 struct testKDBD{
+    testKDBD() {
+
+    }
+
+    testKDBD(const testKDBD &kdbd) {
+        sym=kdbd.sym;
+        capacity=kdbd.capacity;
+        rate=kdbd.rate;
+    }
+
     kdb::type::atom_long sym;
     kdb::type::atom_float capacity;
     kdb::type::atom_int rate;
@@ -91,12 +101,17 @@ void testTD(I handle){
         response= k(handle, (S) 0);
         if(!response)
             break;
+        auto start = std::chrono::high_resolution_clock::now();
         table= kK(response)[2];
         columnValues=kK(table)[1];
         columnNames= kK(table)[0];
         kdb::convert::to_native(columnValues,_TestD);
         r0(response);
         valid=true;
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed_seconds=std::chrono::duration_cast<std::chrono::nanoseconds>(
+                end - start);
+        std::cout<<__func__<<","<<elapsed_seconds.count()<<std::endl;
     }
 
 }
@@ -123,7 +138,7 @@ void printTestD(){
         auto t=valid.load();
         if(!t)
             continue;
-        std::cout<<_TestD.sym<<","<<_TestD.rate<<","<<_TestD.capacity<<std::endl;
+        //std::cout<<_TestD.sym<<","<<_TestD.rate<<","<<_TestD.capacity<<std::endl;
 
     }
 }
