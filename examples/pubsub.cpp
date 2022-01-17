@@ -138,7 +138,7 @@ void printTestD(){
         auto t=valid.load();
         if(!t)
             continue;
-        //std::cout<<_TestD.sym<<","<<_TestD.rate<<","<<_TestD.capacity<<std::endl;
+        std::cout<<_TestD.sym<<","<<_TestD.rate<<","<<_TestD.capacity<<std::endl;
 
     }
 }
